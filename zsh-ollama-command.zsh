@@ -107,12 +107,12 @@ fzf_ollama_commands() {
 
   tput cuu 1 # cleanup waiting message
 
-  ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | jq -r '.[]' | fzf --ansi --height=~10 --cycle)
-  BUFFER=$ZSH_OLLAMA_COMMANDS_SELECTED
+  # ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | jq -r '.[]' | fzf --ansi --height=~10 --cycle)
+  echo $ZSH_OLLAMA_COMMANDS_RESPONSE
+  BUFFER=$ZSH_OLLAMA_COMMANDS_RESPONSE
 
   zle end-of-line
   zle reset-prompt
-  echo $ZSH_OLLAMA_COMMANDS_RESPONSE
   return $ret
 }
 
