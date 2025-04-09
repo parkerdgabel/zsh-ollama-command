@@ -65,8 +65,12 @@ fzf_ollama_commands() {
     "model": "'$ZSH_OLLAMA_MODEL'",
     "messages": [
       {
+        "role": "system",
+        "content":  "You are a helpful assistant that provides MacOS terminal commands. Users can ask you to provide commands for various tasks. You should provide the most relevant commands based on the users request. Your response should be in JSON format with a list of command strings. Each command string should be a valid MacOS terminal command. Do not include any additional text or explanation in your response."
+      },
+      {
         "role": "user",
-        "content":  "'$ZSH_OLLAMA_COMMANDS_MESSAGE_CONTENT'"
+        "content":  "'$ZSH_OLLAMA_COMMANDS_USER_QUERY'"
       }
     ],
     "stream": false
