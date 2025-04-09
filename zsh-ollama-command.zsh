@@ -81,20 +81,15 @@ fzf_ollama_commands() {
     -d "$ZSH_OLLAMA_COMMANDS_REQUEST_BODY")
 
   echo $ZSH_OLLAMA_COMMANDS_RESPONSE
-
-  # Wait indefinitely
-
-  while [ -z "$ZSH_OLLAMA_COMMANDS_RESPONSE" ]; do
-    sleep 1
-  done
   local ret=$?
+
 
   # trim response content newline
   ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo $ZSH_OLLAMA_COMMANDS_RESPONSE | tr -d '\n\r' | tr -d '\0' | jq '.')
   check_status
 
-  # collect suggestion commands from response content
-  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content')
+  # collect suggestion commands from response content and trim any markdown ```json
+  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content' | sed '/^```/d' )
   check_status
 
   # attempts to extract suggestions from ZSH_OLLAMA_COMMANDS_SUGGESTION using jq.
