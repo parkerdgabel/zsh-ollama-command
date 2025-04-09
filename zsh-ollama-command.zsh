@@ -112,6 +112,7 @@ fzf_ollama_commands() {
 
   zle end-of-line
   zle reset-prompt
+  echo $ZSH_OLLAMA_COMMANDS_RESPONSE
   return $ret
 }
 
