@@ -94,12 +94,12 @@ fzf_ollama_commands() {
   # attempts to extract suggestions from ZSH_OLLAMA_COMMANDS_SUGGESTION using jq.
   # If jq fails or returns no output, displays an error message and exits.
   # Otherwise, pipes the output to fzf for interactive selection
-  ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | tr -d '\0' | jq -r '.[]')
+  ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | tr -d '\0' | sed -E '/^[[:space:]]*```(json)?[[:space:]]*$/d' | jq -r '.[]')
   check_status
 
   tput cuu 1 # cleanup waiting message
 
-  ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | jq -r '.[]' )
+  ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | jq -r '.[]' | fzf --ansi --height=~10 --cycle)
   BUFFER=$ZSH_OLLAMA_COMMANDS_SELECTED
 
   zle end-of-line
