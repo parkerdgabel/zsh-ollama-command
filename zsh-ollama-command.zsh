@@ -79,6 +79,14 @@ fzf_ollama_commands() {
   ZSH_OLLAMA_COMMANDS_RESPONSE=$(curl --silent "${ZSH_OLLAMA_URL}/api/chat" \
     -H "Content-Type: application/json" \
     -d "$ZSH_OLLAMA_COMMANDS_REQUEST_BODY")
+
+  echo $ZSH_OLLAMA_COMMANDS_RESPONSE
+
+  # Wait indefinitely
+
+  while [ -z "$ZSH_OLLAMA_COMMANDS_RESPONSE" ]; do
+    sleep 1
+  done
   local ret=$?
 
   # trim response content newline
