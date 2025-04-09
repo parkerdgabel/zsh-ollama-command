@@ -79,8 +79,6 @@ fzf_ollama_commands() {
   ZSH_OLLAMA_COMMANDS_RESPONSE=$(curl --silent "${ZSH_OLLAMA_URL}/api/chat" \
     -H "Content-Type: application/json" \
     -d "$ZSH_OLLAMA_COMMANDS_REQUEST_BODY")
-
-  echo $ZSH_OLLAMA_COMMANDS_RESPONSE
   local ret=$?
 
 
@@ -89,7 +87,8 @@ fzf_ollama_commands() {
   check_status
 
   # collect suggestion commands from response content and trim any markdown ```json
-  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content' | sed '/^```/d' )
+  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content' | tail -n +2 | head -n -1)
+
   check_status
 
   # attempts to extract suggestions from ZSH_OLLAMA_COMMANDS_SUGGESTION using jq.
