@@ -96,6 +96,7 @@ fzf_ollama_commands() {
   # Otherwise, pipes the output to fzf for interactive selection
   ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | tr -d '\0' | sed -E '/^[[:space:]]*```(json)?[[:space:]]*$/d' | jq -r '.[]')
   check_status
+  print -u1 $ZSH_OLLAMA_COMMANDS_SELECTED
 
   tput cuu 1 # cleanup waiting message
 
