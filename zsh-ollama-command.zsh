@@ -81,10 +81,6 @@ fzf_ollama_commands() {
     -d "$ZSH_OLLAMA_COMMANDS_REQUEST_BODY")
   local ret=$?
 
-  echo $ZSH_OLLAMA_COMMANDS_RESPONSE
-
-  wait 
-
   # trim response content newline
   ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo $ZSH_OLLAMA_COMMANDS_RESPONSE | tr -d '\n\r' | tr -d '\0' | jq '.')
   check_status
