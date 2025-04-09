@@ -81,36 +81,25 @@ fzf_ollama_commands() {
     -d "$ZSH_OLLAMA_COMMANDS_REQUEST_BODY")
   local ret=$?
 
-  # check if the response is empty
-  if [ -z "$ZSH_OLLAMA_COMMANDS_RESPONSE" ]; then
-    echo "🚨: zsh-ollama-command failed as response is empty!"
-    return 1
-  fi
-  # check if the response is valid JSON
-  if ! echo "$ZSH_OLLAMA_COMMANDS_RESPONSE" | jq empty; then
-    echo "🚨: zsh-ollama-command failed as response is NOT valid JSON!"
-    return 1
-  fi
   # trim response content newline
-  # ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo $ZSH_OLLAMA_COMMANDS_RESPONSE | tr -d '\n\r' | tr -d '\0' | jq '.')
-  # check_status
-  #
-  # # collect suggestion commands from response content
-  # ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content')
-  # check_status
-  #
-  # # attempts to extract suggestions from ZSH_OLLAMA_COMMANDS_SUGGESTION using jq.
-  # # If jq fails or returns no output, displays an error message and exits.
-  # # Otherwise, pipes the output to fzf for interactive selection
-  # ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | tr -d '\0' | jq -r '.[]')
-  # check_status
-  #
-  # tput cuu 1 # cleanup waiting message
-  #
-  # ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | jq -r '.[]' | fzf --ansi --height=~10 --cycle)
-  # BUFFER=$ZSH_OLLAMA_COMMANDS_SELECTED
-  #
-  echo $ZSH_OLLAMA_COMMANDS_RESPONSE
+  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo $ZSH_OLLAMA_COMMANDS_RESPONSE | tr -d '\n\r' | tr -d '\0' | jq '.')
+  check_status
+
+  # collect suggestion commands from response content
+  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content')
+  check_status
+
+  # attempts to extract suggestions from ZSH_OLLAMA_COMMANDS_SUGGESTION using jq.
+  # If jq fails or returns no output, displays an error message and exits.
+  # Otherwise, pipes the output to fzf for interactive selection
+  ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | tr -d '\0' | jq -r '.[]')
+  check_status
+
+  tput cuu 1 # cleanup waiting message
+
+  ZSH_OLLAMA_COMMANDS_SELECTED=$(echo $ZSH_OLLAMA_COMMANDS_SUGGESTION | jq -r '.[]' | fzf --ansi --height=~10 --cycle)
+  BUFFER=$ZSH_OLLAMA_COMMANDS_SELECTED
+
   zle end-of-line
   zle reset-prompt
   return $ret
