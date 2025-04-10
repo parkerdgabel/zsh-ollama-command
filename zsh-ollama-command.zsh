@@ -89,7 +89,6 @@ fzf_ollama_commands() {
   # collect suggestion commands from response content and trim any markdown ```json
   ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content' )
 
-  print -u1 "$OLLAMA_COMMANDS_SUGGESTION"
   check_status
 
   # attempts to extract suggestions from ZSH_OLLAMA_COMMANDS_SUGGESTION using jq.
