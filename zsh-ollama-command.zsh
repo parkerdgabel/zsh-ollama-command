@@ -83,11 +83,11 @@ fzf_ollama_commands() {
 
 
   # trim response content newline
-  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo $ZSH_OLLAMA_COMMANDS_RESPONSE | tr -d '\n\r' | tr -d '\0' | jq '.' | sed -E '/^[[:space:]]*```(json)?[[:space:]]*$/d')
+  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo $ZSH_OLLAMA_COMMANDS_RESPONSE | tr -d '\n\r' | tr -d '\0' | jq '.' )
   check_status
 
   # collect suggestion commands from response content and trim any markdown ```json
-  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content' )
+  ZSH_OLLAMA_COMMANDS_SUGGESTION=$(echo "$ZSH_OLLAMA_COMMANDS_SUGGESTION" | tr -d '\0' | jq -r '.message.content' | sed -E 's/^[[:space:]]*```(json)?//; s/```[[:space:]]*$//')
 
   check_status
 
